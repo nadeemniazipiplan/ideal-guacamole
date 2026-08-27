@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0" />
+<meta name="theme-color" content="#170f0b" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Law Progress" />
+<title>Law Progress</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#170f0b;
+  --bg-soft:radial-gradient(circle at 12% -10%, rgba(157,127,224,.10), transparent 40%), radial-gradient(circle at 100% 0%, rgba(192,133,82,.08), transparent 35%), #170f0b;
+  --surface:#211610;
+  --surface2:#2a1c14;
+  --purple:#a688e8;
+  --purple-deep:#7357b8;
+  --coffee:#cf9860;
+  --coffee-deep:#8a5a34;
+  --cream:#f4ead9;
+  --muted:#ab9682;
+  --faint:#7d6b5c;
+  --line:rgba(166,136,232,.16);
+  --line-soft:rgba(244,234,217,.08);
+  --good:#93c08c;
+  --warn:#dcab5e;
+  --bad:#cf7c68;
+  --font-display:"Fraunces","Iowan Old Style",Georgia,serif;
+  --font-body:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{-webkit-tap-highlight-color:transparent}
+body{
+  margin:0;background:var(--bg-soft);color:var(--cream);
+  font-family:var(--font-body);min-height:100vh;
+  padding-bottom:calc(env(safe-area-inset-bottom) + 12px);
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[contenteditable]:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--purple);outline-offset:2px}
+[contenteditable]:focus{outline:2px solid var(--purple);outline-offset:2px;border-radius:4px}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:rgba(166,136,232,.22);border-radius:8px}
+::selection{background:rgba(166,136,232,.35)}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important}}
+
+.wrap{max-width:940px;margin:0 auto;padding:0 18px 48px}
+
+/* ---- header ---- */
+header.top{position:sticky;top:0;z-index:15;background:rgba(23,15,11,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+.top-inner{max-width:940px;margin:0 auto;padding:13px 18px 11px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.wordmark{display:flex;align-items:center;gap:11px}
+.mark{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(150deg,var(--purple),var(--coffee));color:#1a1108;font-family:var(--font-display);font-weight:700;font-size:19px;flex:none}
+.wordmark h1{font-family:var(--font-display);font-weight:600;font-size:19px;margin:0}
+.wordmark p{margin:1px 0 0;font-size:12px;color:var(--muted)}
+nav.tabs{display:flex;gap:2px;background:var(--surface);border:1px solid var(--line-soft);border-radius:12px;padding:3px;overflow-x:auto;max-width:100%}
+nav.tabs button{border:0;background:transparent;color:var(--muted);padding:8px 13px;border-radius:9px;font-weight:600;font-size:13.5px;white-space:nowrap;transition:background .15s,color .15s}
+nav.tabs button.active{background:linear-gradient(150deg,var(--purple-deep),var(--purple));color:#fff}
+
+.page{padding-top:20px}
+h2.pagetitle{font-family:var(--font-display);font-weight:600;font-size:23px;margin:0 0 3px;text-wrap:balance}
+p.pagesub{margin:0 0 20px;color:var(--muted);font-size:13.5px;max-width:62ch}
+h3.sec{margin:0 0 10px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--purple);font-weight:700}
+
+/* ---- shared bits ---- */
+.btn{border:1px solid var(--line);background:var(--surface2);color:var(--cream);padding:9px 13px;border-radius:10px;font-weight:600;font-size:13px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--purple)}
+.btn.primary{background:linear-gradient(150deg,var(--purple-deep),var(--purple));border:0;color:#fff}
+.btn.coffee{background:linear-gradient(150deg,var(--coffee-deep),var(--coffee));border:0;color:#20140a}
+.btn.ghost{background:transparent}
+.btn.danger{background:rgba(207,124,104,.12);border-color:rgba(207,124,104,.32);color:#e7a396}
+.btn.small{padding:6px 10px;font-size:12px;border-radius:8px}
+.btn.tiny{padding:4px 8px;font-size:11.5px;border-radius:7px}
+.btn:disabled{opacity:.4;cursor:default}
+.panel{background:var(--surface);border:1px solid var(--line-soft);border-radius:16px;padding:16px;margin-bottom:14px}
+.footnote{font-size:11.5px;color:var(--faint);line-height:1.55}
+.pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 10px;font-size:11.5px;font-weight:700;border:1px solid var(--line-soft);background:var(--surface2);color:var(--muted)}
+.pill.good{color:var(--good);border-color:rgba(147,192,140,.3);background:rgba(147,192,140,.1)}
+.pill.warn{color:var(--warn);border-color:rgba(220,171,94,.3);background:rgba(220,171,94,.1)}
+.pill.bad{color:var(--bad);border-color:rgba(207,124,104,.3);background:rgba(207,124,104,.1)}
+.iconbtn{background:none;border:0;color:var(--faint);padding:4px;line-height:1;border-radius:6px;font-size:13px}
+.iconbtn:hover{color:var(--cream)}
+
+/* ---- stat strip ---- */
+.statrow{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.ringcard{background:var(--surface);border:1px solid var(--line-soft);border-radius:16px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:118px}
+.ring{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(var(--purple) calc(var(--pct,0)*1%), var(--surface2) 0)}
+.ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--surface)}
+.ring b{position:relative;font-family:var(--font-display);font-size:17px;font-weight:600}
+.ringcard .ringlabel{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stat{background:var(--surface);border:1px solid var(--line-soft);border-radius:16px;padding:13px 14px;display:flex;flex-direction:column;justify-content:center;gap:3px}
+.stat .label{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stat .value{font-family:var(--font-display);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat .sub{font-size:11.5px;color:var(--faint)}
+.stat4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+@media(max-width:700px){
+  .statrow{grid-template-columns:1fr 1fr}
+  .ringcard{grid-column:1/-1;flex-direction:row;justify-content:flex-start;gap:14px}
+  .stat4{grid-template-columns:1fr 1fr}
+}
+
+/* ---- week chart ---- */
+.weekcard{background:var(--surface);border:1px solid var(--line-soft);border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.weekcard .whead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.weekcard .whead h3{margin:0;font-size:13px;font-weight:700}
+.weekcard .whead span{font-size:11.5px;color:var(--muted)}
+.weekchart{display:flex;gap:8px;align-items:flex-end;height:64px}
+.wbarwrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.wbar{width:100%;border-radius:4px 4px 2px 2px;background:var(--surface2);min-height:3px}
+.wbar.hit{background:linear-gradient(180deg,var(--coffee),var(--purple))}
+.wbar.some{background:var(--purple-deep)}
+.wbarwrap .wlabel{font-size:10px;color:var(--faint)}
+.wbarwrap.istoday .wlabel{color:var(--purple);font-weight:700}
+
+/* ---- timer strip ---- */
+.timerbar{background:var(--surface);border:1px solid var(--line-soft);border-radius:16px;padding:12px 14px;margin-bottom:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.timerbar .tclock{font-family:var(--font-display);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;min-width:108px}
+.timerbar select,.selectlike{background:var(--surface2);border:1px solid var(--line-soft);color:var(--cream);border-radius:10px;padding:9px 10px;font-size:13px}
+.timerbar select{flex:1;min-width:160px}
+.timerbtns{display:flex;gap:6px}
+.timerstate{font-size:11px;color:var(--faint)}
+
+/* ---- section / chapter list ---- */
+.section-block{margin-bottom:22px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 8px}
+.section-head h3{margin:0;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--purple);font-weight:700}
+.section-bar{flex:1;max-width:140px;height:5px;border-radius:4px;background:var(--surface2);overflow:hidden}
+.section-bar>div{height:100%;background:linear-gradient(90deg,var(--coffee),var(--purple))}
+.section-pct{font-size:11.5px;color:var(--muted);min-width:32px;text-align:right}
+
+.chrow{background:var(--surface);border:1px solid var(--line-soft);border-radius:14px;margin-bottom:7px;overflow:hidden}
+.chrow.open{border-color:var(--line)}
+.chhead{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer}
+.chdot{width:9px;height:9px;border-radius:50%;flex:none;background:var(--surface2);border:1px solid var(--line-soft)}
+.chdot.some{background:var(--coffee)}
+.chdot.ready{background:var(--purple)}
+.chdot.mastered{background:linear-gradient(150deg,var(--coffee),var(--purple));box-shadow:0 0 0 2px rgba(166,136,232,.25)}
+.chnum{font-family:var(--font-display);color:var(--muted);font-size:13px;min-width:20px}
+.chtitle{flex:1;min-width:0}
+.chtitle .t{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chtitle .m{font-size:11.5px;color:var(--faint);margin-top:1px}
+.chbars{display:none}
+@media(min-width:640px){.chbars{display:flex;flex-direction:column;gap:3px;width:130px;flex:none}}
+.minibar{height:4px;border-radius:3px;background:var(--surface2);overflow:hidden}
+.minibar>div{height:100%}
+.minibar.prep>div{background:var(--coffee)}
+.minibar.mastery>div{background:var(--purple)}
+.chright{text-align:right;font-size:11px;color:var(--muted);min-width:64px}
+.chevron{transition:transform .18s;color:var(--faint);flex:none}
+.chrow.open .chevron{transform:rotate(180deg)}
+.chbody{max-height:0;overflow:hidden;transition:max-height .22s ease}
+.chrow.open .chbody{max-height:1400px}
+.chbody-inner{padding:2px 14px 16px}
+
+/* ---- checklists (chapter + day) ---- */
+.checklist{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.checkitem{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--line-soft);border-radius:11px;background:var(--surface2)}
+.cbox{appearance:none;width:19px;height:19px;border-radius:6px;border:1.5px solid var(--line);background:transparent;flex:none;display:grid;place-items:center;cursor:pointer}
+.cbox:checked{background:linear-gradient(150deg,var(--coffee),var(--purple));border-color:transparent}
+.cbox:checked::after{content:"✓";font-size:12px;color:#1a1108;font-weight:800}
+.checkitem .ci-icon{font-size:14px;flex:none;opacity:.85}
+.checkitem .lbl{font-size:13.5px;flex:1;min-width:0;word-break:break-word}
+.checkitem.done .lbl{color:var(--faint);text-decoration:line-through}
+.checkitem .mins{font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--line-soft);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.checkitem .chtag{font-size:11px;color:var(--coffee);white-space:nowrap}
+.addrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.addrow input[type=text]{flex:1;min-width:150px;background:var(--surface2);border:1px solid var(--line-soft);color:var(--cream);border-radius:10px;padding:9px 10px;font-size:13px}
+.addrow input[type=number]{width:64px;background:var(--surface2);border:1px solid var(--line-soft);color:var(--cream);border-radius:10px;padding:9px 8px;font-size:13px}
+.addrow select{background:var(--surface2);border:1px solid var(--line-soft);color:var(--cream);border-radius:10px;padding:9px 8px;font-size:13px;max-width:180px}
+.quickchips{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.qchip{background:var(--surface2);border:1px dashed var(--line);color:var(--muted);border-radius:999px;padding:5px 10px;font-size:11.5px}
+.qchip:hover{color:var(--cream);border-style:solid;border-color:var(--purple)}
+
+.masteryrow{display:flex;align-items:center;gap:10px;margin:10px 0 8px}
+.masteryrow label{font-size:12px;color:var(--muted);white-space:nowrap}
+input[type=range]{-webkit-appearance:none;flex:1;height:4px;border-radius:3px;background:var(--surface2);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--purple);border:2px solid #1a1108;cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--purple);border:2px solid #1a1108;cursor:pointer}
+.masteryval{font-size:12.5px;font-weight:700;min-width:34px;text-align:right}
+.chmetarow{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11.5px;color:var(--faint);margin-bottom:10px;flex-wrap:wrap}
+.chmetarow input{width:60px;background:var(--surface2);border:1px solid var(--line-soft);color:var(--cream);border-radius:7px;padding:4px 6px;font-size:12px}
+.chactions{display:flex;gap:7px;flex-wrap:wrap}
+
+/* ---- to-do page ---- */
+.daynav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.daynav .dlabel{font-family:var(--font-display);font-size:16px;font-weight:600;text-align:center;flex:1}
+.daynav .dlabel small{display:block;font-family:var(--font-body);font-size:11px;color:var(--faint);font-weight:400;margin-top:2px}
+.daystats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.dstat{flex:1;min-width:96px;background:var(--surface2);border:1px solid var(--line-soft);border-radius:12px;padding:9px 11px}
+.dstat .l{font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.dstat .v{font-family:var(--font-display);font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:2px}
+.dayprog{height:6px;border-radius:4px;background:var(--surface2);overflow:hidden;margin-bottom:12px}
+.dayprog>div{height:100%;background:linear-gradient(90deg,var(--coffee),var(--purple))}
+.filterchips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.fchip{background:var(--surface2);border:1px solid var(--line-soft);color:var(--muted);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600}
+.fchip.active{background:linear-gradient(150deg,var(--purple-deep),var(--purple));color:#fff;border-color:transparent}
+.fchip .n{opacity:.7;font-weight:500}
+.backlog-ch{margin-bottom:12px}
+.backlog-ch .bhead{display:flex;align-items:baseline;gap:8px;margin-bottom:5px}
+.backlog-ch .bhead b{font-size:13px}
+.backlog-ch .bhead span{font-size:11px;color:var(--faint)}
+.bitem{display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--surface2);border-left:3px solid var(--coffee);border-radius:0 10px 10px 0;margin-bottom:5px;font-size:13px}
+.bitem.weak{border-left-color:var(--purple)}
+.bitem .btext{flex:1;min-width:0}
+.nexttask{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.nexttask .tt{font-family:var(--font-display);font-size:16px;font-weight:600}
+
+/* ---- pathway page ---- */
+.planbar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:14px}
+.planfield{display:flex;flex-direction:column;gap:4px}
+.planfield label{font-size:11px;color:var(--muted)}
+.planfield input{background:var(--surface2);border:1px solid var(--line-soft);color:var(--cream);border-radius:10px;padding:8px 10px;font-size:13px}
+.pacebar{position:relative;height:10px;border-radius:6px;background:var(--surface2);margin:14px 0 8px;overflow:visible}
+.pacebar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--coffee),var(--purple))}
+.pacebar .marker{position:absolute;top:-5px;width:2px;height:20px;background:var(--cream);opacity:.8}
+.pacelegend{display:flex;justify-content:space-between;font-size:11px;color:var(--faint)}
+.track{position:relative;padding-left:22px;margin-top:6px}
+.track::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--coffee),var(--purple));opacity:.35}
+.tnode{position:relative;margin-bottom:12px}
+.tnode::before{content:"";position:absolute;left:-20px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--surface);border:2px solid var(--coffee)}
+.tnode.done::before{background:var(--purple);border-color:var(--purple)}
+.tnode .thead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;cursor:pointer}
+.tnode .tname{font-weight:700;font-size:13.5px}
+.tnode .tdate{font-size:11.5px;color:var(--coffee);white-space:nowrap;font-variant-numeric:tabular-nums}
+.tnode .tmeta{font-size:11.5px;color:var(--faint);margin-top:2px}
+.tnode .tbar{height:5px;border-radius:4px;background:var(--surface2);overflow:hidden;margin-top:6px}
+.tnode .tbar>div{height:100%;background:linear-gradient(90deg,var(--coffee),var(--purple))}
+.tchapters{display:none;margin-top:8px}
+.tnode.open .tchapters{display:block}
+.hrow{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line-soft);font-size:12.5px}
+.hrow .hname{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hrow .hnum{font-variant-numeric:tabular-nums;color:var(--muted);text-align:right;min-width:52px}
+.hrow.head{color:var(--muted);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;border-bottom-color:var(--line)}
+.hrow.head .hnum{color:var(--muted)}
+
+/* ---- modal ---- */
+.modal{position:fixed;inset:0;background:rgba(10,6,4,.7);display:none;align-items:flex-start;justify-content:center;padding:18px;z-index:30;overflow:auto}
+.modal.show{display:flex}
+.modal-card{width:min(600px,100%);background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;margin:20px 0 40px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.modal-head h3{margin:0;font-family:var(--font-display);font-weight:600;font-size:17px}
+.modtabs{display:flex;gap:4px;overflow-x:auto;margin-bottom:14px;border-bottom:1px solid var(--line-soft)}
+.modtabs button{background:none;border:0;color:var(--muted);padding:8px 10px;border-bottom:2px solid transparent;white-space:nowrap;font-size:13px;font-weight:600}
+.modtabs button.active{color:var(--cream);border-color:var(--purple)}
+.subpage{display:none}
+.subpage.active{display:block}
+.field{margin:10px 0}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+.field input,.field textarea{width:100%;background:var(--surface2);border:1px solid var(--line-soft);color:var(--cream);border-radius:10px;padding:9px 10px}
+.flash{background:var(--surface2);border:1px solid var(--line-soft);border-radius:14px;padding:18px;min-height:100px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:14.5px;margin-bottom:10px;cursor:pointer}
+.flashnav{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.glossrow{padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:13.5px}
+.glossrow b{color:var(--coffee)}
+.rowline{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.tag{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--line-soft);border-radius:999px;padding:5px 10px;font-size:12px;margin:3px 5px 0 0}
+.tag button{background:none;border:0;color:var(--faint);padding:0;font-size:13px}
+
+/* ---- calendar ---- */
+.calnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.calnav b{font-family:var(--font-display);font-weight:600}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.calhead{text-align:center;font-size:10.5px;color:var(--muted);padding-bottom:4px}
+.calday{aspect-ratio:1;border-radius:10px;border:1px solid var(--line-soft);background:var(--surface2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;gap:3px;cursor:pointer}
+.calday.empty{visibility:hidden}
+.calday .dot{width:7px;height:7px;border-radius:50%}
+.calday.streak{background:rgba(166,136,232,.16);border-color:rgba(166,136,232,.4)}
+.calday.partial{background:rgba(207,152,96,.14);border-color:rgba(207,152,96,.32)}
+.calday.today{outline:2px solid var(--purple);outline-offset:1px}
+.daydetail{margin-top:14px;border-top:1px solid var(--line-soft);padding-top:12px}
+.logrow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+
+.installtip{margin-top:6px;font-size:12px;color:var(--faint);text-align:center;line-height:1.6}
+.installtip b{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="wordmark">
+      <div class="mark">§</div>
+      <div><h1>Law Progress</h1><p>Cambridge AS &amp; A Level Law · 48 chapters</p></div>
+    </div>
+    <nav class="tabs" id="navTabs">
+      <button data-page="progress" class="active" onclick="showPage('progress')">Progress</button>
+      <button data-page="pathway" onclick="showPage('pathway')">Pathway</button>
+      <button data-page="todo" onclick="showPage('todo')">To&#8209;Do</button>
+      <button data-page="calendar" onclick="showPage('calendar')">Calendar</button>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ PROGRESS ============ -->
+  <div class="page" id="page-progress">
+    <h2 class="pagetitle">Your progress</h2>
+    <p class="pagesub">Preparation tracks your checklist. Mastery is your own honest read on how well you know it. Every chapter checklist is yours to edit.</p>
+
+    <section class="statrow">
+      <div class="ringcard">
+        <div class="ring" id="prepRing" style="--pct:0"><b id="ringPct">0%</b></div>
+        <div class="ringlabel">Overall prep</div>
+      </div>
+      <div class="stat"><div class="label">Mastery</div><div class="value" id="overallMasteryStat">0%</div><div class="sub">weighted by chapter</div></div>
+      <div class="stat"><div class="label">Hours logged</div><div class="value" id="hoursLoggedStat">0h</div><div class="sub" id="hoursTargetSub">of ~0h target</div></div>
+      <div class="stat"><div class="label">Exam ready</div><div class="value" id="examReadyStat">0</div><div class="sub" id="chapterCountsSub">of 48 chapters</div></div>
+    </section>
+
+    <div class="weekcard">
+      <div class="whead"><h3>This week</h3><span id="weekTotal">0h logged</span></div>
+      <div class="weekchart" id="weekChart"></div>
+    </div>
+
+    <div class="timerbar">
+      <div>
+        <div class="tclock" id="timerClock">00:00:00</div>
+        <div class="timerstate">Today: <span id="todayMini">0h 0m</span> · streak <span id="streakMini">0 🔥</span></div>
+      </div>
+      <select id="timerChapterSelect"></select>
+      <div class="timerbtns">
+        <button class="btn primary" id="startBtn" onclick="startTimer()">Start</button>
+        <button class="btn" id="pauseBtn" onclick="pauseTimer()" disabled>Pause</button>
+        <button class="btn danger" id="stopBtn" onclick="stopTimer()" disabled>Stop &amp; save</button>
+      </div>
+    </div>
+
+    <div id="sectionsContainer"></div>
+
+    <p class="installtip"><b>On iPad:</b> tap Share → Add to Home Screen to open this full‑screen, like an app. Everything is saved on this device.</p>
+  </div>
+
+  <!-- ============ PATHWAY ============ -->
+  <div class="page" id="page-pathway" style="display:none">
+    <h2 class="pagetitle">Pathway to completion</h2>
+    <p class="pagesub">Hours still required for every chapter, each portion, and the whole course — with the finish date each pace actually gets you.</p>
+
+    <div class="panel">
+      <div class="planbar">
+        <div class="planfield"><label>Exam date</label><input type="date" id="examDateInput" onchange="savePlanField()"></div>
+        <div class="planfield"><label>Daily goal (h)</label><input type="number" id="dailyGoalInput" min="0.5" step="0.5" onchange="savePlanField()"></div>
+        <div class="planfield"><label>Session length (h)</label><input type="number" id="sessionLenInput" min="0.5" step="0.5" onchange="savePlanField()"></div>
+        <div class="planfield">
+          <label>Project using</label>
+          <div class="filterchips" style="margin:0">
+            <button class="fchip" id="paceModeRecent" onclick="setPaceMode('recent')">Recent pace</button>
+            <button class="fchip" id="paceModeGoal" onclick="setPaceMode('goal')">Goal pace</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="stat4">
+      <div class="stat"><div class="label">Hours remaining</div><div class="value" id="pwRemaining">0h</div><div class="sub" id="pwRemainingSub">of 0h total</div></div>
+      <div class="stat"><div class="label">Days to exam</div><div class="value" id="pwDaysLeft">—</div><div class="sub" id="pwExamSub">set an exam date</div></div>
+      <div class="stat"><div class="label">Needed per day</div><div class="value" id="pwNeeded">—</div><div class="sub">to finish in time</div></div>
+      <div class="stat"><div class="label">Projected finish</div><div class="value" id="pwFinish">—</div><div class="sub" id="pwFinishSub">at current pace</div></div>
+    </section>
+
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <h3 class="sec" style="margin:0">Pace check</h3>
+        <span class="pill" id="pacePill">No data yet</span>
+      </div>
+      <div class="pacebar"><div class="fill" id="paceFill" style="width:0%"></div><div class="marker" id="paceMarker" style="left:0%"></div></div>
+      <div class="pacelegend"><span id="paceNow">Recent pace 0.0h/day</span><span id="paceNeed">Needed —</span></div>
+      <div class="footnote" style="margin-top:8px" id="paceNote"></div>
+    </div>
+
+    <div class="panel">
+      <h3 class="sec">Course roadmap</h3>
+      <div class="footnote" style="margin-bottom:10px" id="roadmapNote"></div>
+      <div class="track" id="roadmapTrack"></div>
+    </div>
+
+    <div class="panel">
+      <h3 class="sec">Backup</h3>
+      <div class="footnote">Your data lives only in this browser. Copy the text below somewhere safe, or paste an old backup in and press Restore.</div>
+      <div class="field"><textarea id="backupBox" rows="4" placeholder="Press Export to fill this box"></textarea></div>
+      <div class="chactions">
+        <button class="btn small" onclick="exportData()">Export</button>
+        <button class="btn coffee small" onclick="importData()">Restore</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TO-DO ============ -->
+  <div class="page" id="page-todo" style="display:none">
+    <h2 class="pagetitle">To‑do</h2>
+    <p class="pagesub">Build a plan for any single day, and pull anything outstanding into it from the backlog below.</p>
+
+    <div class="panel">
+      <div class="daynav">
+        <button class="btn small" onclick="shiftDay(-1)">←</button>
+        <div class="dlabel" id="dayLabel">Today<small></small></div>
+        <button class="btn small" onclick="shiftDay(1)">→</button>
+      </div>
+      <div class="daystats">
+        <div class="dstat"><div class="l">Tasks done</div><div class="v" id="dsDone">0 / 0</div></div>
+        <div class="dstat"><div class="l">Planned</div><div class="v" id="dsPlanned">0m</div></div>
+        <div class="dstat"><div class="l">Studied</div><div class="v" id="dsLogged">0h 0m</div></div>
+      </div>
+      <div class="dayprog"><div id="dayProgFill" style="width:0%"></div></div>
+
+      <div class="checklist" id="dayList"></div>
+
+      <div class="addrow">
+        <input type="text" id="todoText" placeholder="Add a task for this day…" onkeydown="if(event.key==='Enter')addTodo()">
+        <select id="todoChapter"></select>
+        <input type="number" id="todoMins" min="5" step="5" placeholder="min">
+        <button class="btn coffee small" onclick="addTodo()">Add</button>
+      </div>
+      <div class="quickchips" id="todoQuickChips"></div>
+      <div class="chactions" style="margin-top:10px">
+        <button class="btn small ghost" onclick="carryOver()">↩ Carry unfinished from previous day</button>
+        <button class="btn small ghost" onclick="clearDone()">Clear completed</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 class="sec">Recommended next</h3>
+      <div class="nexttask" id="nextTaskBox"></div>
+    </div>
+
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <h3 class="sec" style="margin:0">Backlog</h3>
+        <span class="pill" id="remainingCount">0 open</span>
+      </div>
+      <div class="filterchips" id="backlogFilters"></div>
+      <div id="remainingList"></div>
+    </div>
+  </div>
+
+  <!-- ============ CALENDAR ============ -->
+  <div class="page" id="page-calendar" style="display:none">
+    <h2 class="pagetitle">Study calendar</h2>
+    <p class="pagesub">Purple = 3h+ streak day · Coffee = studied, under 3h · Empty = no study logged.</p>
+    <div class="panel">
+      <div class="calnav">
+        <button class="btn small" onclick="calShiftMonth(-1)">← Prev</button>
+        <b id="calMonthLabel"></b>
+        <button class="btn small" onclick="calShiftMonth(1)">Next →</button>
+      </div>
+      <div class="calgrid" id="calHeadRow"></div>
+      <div class="calgrid" id="calGrid" style="margin-top:6px"></div>
+      <div class="daydetail" id="dayDetail"><div class="footnote">Tap a day to see what you studied.</div></div>
+    </div>
+    <div class="panel">
+      <h3 class="sec">This month</h3>
+      <div id="monthSummary"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Deep study-tools modal -->
+<div class="modal" id="deepModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="deepModalTitle">Chapter</h3>
+      <button class="btn small" onclick="closeDeepModal()">Close</button>
+    </div>
+    <div class="modtabs" id="deepTabs">
+      <button data-tab="flash" class="active" onclick="deepTab('flash')">Flashcards</button>
+      <button data-tab="gloss" onclick="deepTab('gloss')">Glossary</button>
+      <button data-tab="weak" onclick="deepTab('weak')">Weak areas</button>
+      <button data-tab="notes" onclick="deepTab('notes')">Notes &amp; files</button>
+    </div>
+
+    <div class="subpage active" id="sub-flash">
+      <div id="flashViewer" style="display:none">
+        <div class="flash" id="flashFace" onclick="flipFlash()">Tap to reveal</div>
+        <div class="flashnav">
+          <button class="btn small" onclick="prevFlash()">◀ Prev</button>
+          <span class="footnote" id="flashPos"></span>
+          <button class="btn small" onclick="nextFlash()">Next ▶</button>
+        </div>
+      </div>
+      <div id="flashEmpty" class="footnote">No flashcards yet for this chapter.</div>
+      <hr style="border-color:var(--line-soft);margin:14px 0">
+      <div class="field"><label>Question / front</label><input id="fcQ"></div>
+      <div class="field"><label>Answer / back</label><input id="fcA"></div>
+      <button class="btn coffee small" onclick="addFlashcard()">+ Add flashcard</button>
+      <div id="fcList" style="margin-top:10px"></div>
+    </div>
+
+    <div class="subpage" id="sub-gloss">
+      <div class="field"><label>Term</label><input id="glT"></div>
+      <div class="field"><label>Definition</label><input id="glD"></div>
+      <button class="btn coffee small" onclick="addGlossary()">+ Add term</button>
+      <div id="glList" style="margin-top:10px"></div>
+    </div>
+
+    <div class="subpage" id="sub-weak">
+      <div class="field"><label>Add a weak area (e.g. "confuses invitation to treat vs offer")</label><input id="weakInput" onkeydown="if(event.key==='Enter')addWeak()"></div>
+      <button class="btn coffee small" onclick="addWeak()">+ Add</button>
+      <div id="weakTags" style="margin-top:10px"></div>
+    </div>
+
+    <div class="subpage" id="sub-notes">
+      <div class="field"><label>Free notes for this chapter</label><textarea id="chNotes" rows="5" onchange="saveNotesField()"></textarea></div>
+      <div class="field">
+        <label>Attach a file reference (PDF / past paper / worksheet from your Files app)</label>
+        <input type="file" id="fileAttach" onchange="attachFile(event)">
+        <div class="footnote">Only the file name is stored — keep the actual file in your iPad Files app or iCloud Drive.</div>
+      </div>
+      <div id="fileList" style="margin-top:8px"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= COURSE DATA ================= */
+const COURSE = [
+["Section 1 — English Legal System",[
+ [1,"The English legal system and its context",13],[2,"Parliamentary law making",11],[3,"Delegated legislation",9],
+ [4,"Statutory interpretation",11],[5,"Judicial precedent",10],[6,"Civil courts and civil process",7],
+ [7,"Alternative methods of dispute resolution",5],[8,"Criminal courts and criminal process",11],
+ [9,"Police powers",12],[10,"The judiciary — superior and inferior judges",10],[11,"Legal professionals",7],[12,"Lay personnel",10]
+]],
+["Section 2 — Criminal Law",[
+ [13,"Actus reus and mens rea",10],[14,"Theft",17],[15,"Robbery",5],[16,"Burglary",6],[17,"Blackmail",5],
+ [18,"Handling stolen goods",5],[19,"Making off without payment",4],[20,"Criminal damage",7],[21,"Fraud",7],
+ [22,"Adult offenders, young offenders and aims of sentencing",11]
+]],
+["Section 3 — Law of Contract",[
+ [23,"Nature of a contract",3],[24,"Offer and acceptance",11],[25,"Intention to create legal relations",5],
+ [26,"Consideration",8],[27,"Capacity (minors only)",4],[28,"Express terms",4],
+ [29,"Terms implied by the Consumer Rights Act 2015",4],[30,"Status of terms",3],[31,"Control of exemption clauses",6],
+ [32,"Performance",3],[33,"Breach",3],[34,"Frustration",4],[35,"Common law remedies",5],[36,"Equitable remedies",4]
+]],
+["Section 4 — Law of Tort",[
+ [37,"Nature of liability in negligence",12],[38,"Duty of care",9],[39,"Breach of duty",11],
+ [40,"Causation and remoteness of damage",10],[41,"Novel duty situations",13],[42,"Occupiers' liability",12],
+ [43,"Private nuisance",8],[44,"Rylands v Fletcher",9],[45,"Trespass to land",4],
+ [46,"Assault, battery and false imprisonment",11],[47,"Defences",10],[48,"Remedies",9]
+]]
+];
+const DEFAULT_TASKS = [
+  {icon:"📝", label:"Notes taken"},
+  {icon:"⚖️", label:"Case study reviewed"},
+  {icon:"❓", label:"Quiz completed"},
+  {icon:"📄", label:"Past paper practice"},
+  {icon:"🔁", label:"Revision pass"}
+];
+const TASK_PRESETS = [
+  {icon:"📝", label:"Notes taken"},
+  {icon:"⚖️", label:"Case study reviewed"},
+  {icon:"❓", label:"Quiz completed"},
+  {icon:"📄", label:"Past paper practice"},
+  {icon:"🔁", label:"Revision pass"},
+  {icon:"🗂", label:"Flashcards made"},
+  {icon:"✍️", label:"Essay plan written"},
+  {icon:"📜", label:"Statutes memorised"},
+  {icon:"🧩", label:"Problem question attempted"},
+  {icon:"🎯", label:"Weak areas re-tested"}
+];
+const TODO_PRESETS = ["Read chapter","Rewrite notes","Case list recap","Timed past paper","Mark & correct paper","Flashcard drill","Essay plan","Watch recap video"];
+const STREAK_MS = 3*60*60*1000;
+
+function flatChapters(){
+  const out=[];
+  COURSE.forEach(([section,chs],si)=>chs.forEach(([n,t,pages])=>out.push({n,t,pages,section,si})));
+  return out;
+}
+const ALL_CHAPTERS = flatChapters();
+function chapterInfo(n){ return ALL_CHAPTERS.find(c=>c.n===n); }
+function estimateHours(pages){ return Math.max(1.5, Math.round(pages*0.4*2)/2); }
+
+/* ================= STORAGE ================= */
+const LS_LOGS="lt_logs", LS_CHAPTERS="lt_chapters", LS_TODOS="lt_todos", LS_PLAN="lt_plan";
+let storageOK=true;
+try{ localStorage.setItem("lt_probe","1"); localStorage.removeItem("lt_probe"); }catch(e){ storageOK=false; }
+const memStore={};
+function readJSON(k,f){
+  try{ return JSON.parse(storageOK? localStorage.getItem(k) : memStore[k]) ?? f; }catch(e){ return f; }
+}
+function writeJSON(k,v){
+  const s=JSON.stringify(v);
+  if(storageOK){ try{ localStorage.setItem(k,s); return; }catch(e){ storageOK=false; showStorageWarning(); } }
+  memStore[k]=s;
+}
+function showStorageWarning(){
+  if(document.getElementById("storageWarn")) return;
+  const el=document.createElement("div");
+  el.id="storageWarn";
+  el.style.cssText="position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(207,124,104,.95);color:#20140a;font-size:12.5px;font-weight:600;padding:10px 14px;text-align:center;line-height:1.45";
+  el.textContent="This page can’t save to your device at this address — anything you tick will be lost when you close it. Open it from its https:// web link instead of a downloaded file.";
+  document.body.appendChild(el);
+}
+
+function getLogs(){ return readJSON(LS_LOGS,[]); }
+function saveLogs(v){ writeJSON(LS_LOGS,v); }
+function getChapterStore(){ return readJSON(LS_CHAPTERS,{}); }
+function saveChapterStore(v){ writeJSON(LS_CHAPTERS,v); }
+function getTodoStore(){ return readJSON(LS_TODOS,{}); }
+function saveTodoStore(v){ writeJSON(LS_TODOS,v); }
+function getPlan(){ return Object.assign({examDate:"", dailyGoalH:3, sessionH:1.5, paceMode:"recent"}, readJSON(LS_PLAN,{})); }
+function savePlan(p){ writeJSON(LS_PLAN,p); }
+
+function newId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function defaultChapterData(n){
+  const info=chapterInfo(n);
+  return {
+    // stable ids: getChapterData() is called on every render, so defaults must not
+    // generate a new id each time or handlers could never find their task again
+    tasks: DEFAULT_TASKS.map((t,i)=>({id:"d"+i, icon:t.icon, label:t.label, done:false})),
+    mastery:0, targetHours: estimateHours(info.pages),
+    weak:[], flashcards:[], glossary:[], notes:"", files:[]
+  };
+}
+function getChapterData(n){
+  const store=getChapterStore();
+  let d=store[n];
+  if(!d) return defaultChapterData(n);
+  d=Object.assign(defaultChapterData(n), d);
+  // migrate old boolean-array format
+  if(Array.isArray(d.steps) && (!store[n].tasks)){
+    d.tasks = DEFAULT_TASKS.map((t,i)=>({id:"d"+i, icon:t.icon, label:t.label, done:!!d.steps[i]}));
+  }
+  delete d.steps;
+  if(!Array.isArray(d.tasks)) d.tasks=[];
+  return d;
+}
+function setChapterData(n,data){ const store=getChapterStore(); store[n]=data; saveChapterStore(store); }
+function chapterLoggedMs(n){ return getLogs().filter(l=>l.chapterN===n).reduce((a,b)=>a+b.ms,0); }
+function chapterPrepPct(data){
+  if(!data.tasks.length) return 0;
+  return Math.round((data.tasks.filter(t=>t.done).length/data.tasks.length)*100);
+}
+
+/* ================= APP STATE ================= */
+let timerRunning=false, timerPaused=false, timerStart=null, timerAccum=0;
+let openChapterN=null, openSectionI=null;
+let deepModalChapter=null;
+let flashIdx=0, flashFlipped=false;
+let calDate=new Date();
+let todoDate=new Date();
+let backlogFilter="all";
+let visibleBacklog=[];
+let nextTaskPick=null;
+const $=id=>document.getElementById(id);
+function escapeHtml(s){ return (s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+
+/* ================= DATE HELPERS ================= */
+function dayKey(d){ return new Date(d).toDateString(); }
+function isoDay(d){ const x=new Date(d); return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,"0")}-${String(x.getDate()).padStart(2,"0")}`; }
+function fromIsoDay(s){ const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); }
+function daysBetween(a,b){ const MS=86400000; return Math.round((new Date(b.getFullYear(),b.getMonth(),b.getDate()) - new Date(a.getFullYear(),a.getMonth(),a.getDate()))/MS); }
+function addDays(d,n){ const x=new Date(d); x.setDate(x.getDate()+n); return x; }
+function shortDate(d){ return d.toLocaleDateString(undefined,{day:"numeric",month:"short"}); }
+
+/* ================= NAVIGATION ================= */
+function showPage(p){
+  document.querySelectorAll(".page").forEach(el=>el.style.display="none");
+  $("page-"+p).style.display="block";
+  document.querySelectorAll("#navTabs button").forEach(b=>b.classList.toggle("active", b.dataset.page===p));
+  if(p==="progress") renderProgressPage();
+  if(p==="pathway") renderPathway();
+  if(p==="todo") renderTodoPage();
+  if(p==="calendar") renderCalendar();
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+/* ================= TIMER ================= */
+function fmt(ms){
+  const s=Math.max(0,Math.floor(ms/1000)), h=Math.floor(s/3600), m=Math.floor((s%3600)/60), ss=s%60;
+  return [h,m,ss].map(x=>String(x).padStart(2,"0")).join(":");
+}
+function hm(ms){ const mins=Math.floor(ms/60000); return `${Math.floor(mins/60)}h ${mins%60}m`; }
+function currentTimerMs(){
+  if(!timerRunning || timerPaused) return timerAccum;
+  return timerAccum + (Date.now()-timerStart);
+}
+function startTimer(){
+  timerRunning=true; timerPaused=false; timerStart=Date.now();
+  $("startBtn").disabled=true; $("pauseBtn").disabled=false; $("stopBtn").disabled=false;
+}
+function pauseTimer(){
+  if(!timerRunning) return;
+  if(!timerPaused){ timerAccum += Date.now()-timerStart; timerPaused=true; $("pauseBtn").textContent="Resume"; }
+  else{ timerStart=Date.now(); timerPaused=false; $("pauseBtn").textContent="Pause"; }
+}
+function stopTimer(){
+  const ms=currentTimerMs();
+  if(ms<3000 && !confirm("This session is under a few seconds. Save it anyway?")){ resetTimerUI(); return; }
+  const chVal=$("timerChapterSelect").value;
+  const chN = chVal? Number(chVal): null;
+  const logs=getLogs();
+  logs.unshift({id:Date.now(), date:new Date().toISOString(), ms, chapterN:chN, chapterTitle: chN? chapterInfo(chN).t : null});
+  saveLogs(logs);
+  resetTimerUI();
+  renderProgressPage();
+}
+function resetTimerUI(){
+  timerRunning=false; timerPaused=false; timerAccum=0; timerStart=null;
+  $("startBtn").disabled=false; $("pauseBtn").disabled=true; $("pauseBtn").textContent="Pause"; $("stopBtn").disabled=true;
+  $("timerClock").textContent="00:00:00";
+}
+function tick(){ $("timerClock").textContent=fmt(currentTimerMs()); updateLiveStats(); }
+setInterval(tick,1000);
+
+/* ================= DAILY / STREAK ================= */
+function dailyTotalsMap(){
+  const map={};
+  getLogs().forEach(l=>{ const k=dayKey(l.date); map[k]=(map[k]||0)+l.ms; });
+  return map;
+}
+function calcStreak(){
+  const map=dailyTotalsMap();
+  let streak=0, d=new Date();
+  const todayKey=dayKey(d);
+  if(!(map[todayKey]>=STREAK_MS)){ d.setDate(d.getDate()-1); }
+  while(map[dayKey(d)]>=STREAK_MS){ streak++; d.setDate(d.getDate()-1); }
+  if(map[todayKey]>=STREAK_MS) streak+=1;
+  return streak;
+}
+function updateLiveStats(){
+  const map=dailyTotalsMap();
+  const todayTotal=(map[dayKey(new Date())]||0) + (timerRunning? currentTimerMs() : 0);
+  $("todayMini").textContent = hm(todayTotal);
+  $("streakMini").textContent = `${calcStreak()} 🔥`;
+}
+
+/* ================= TOTALS ================= */
+function computeTotals(){
+  let prepW=0, masteryW=0, weight=0, targetTotal=0, loggedTotal=0, examReady=0;
+  const sections = COURSE.map(([name])=>({name, target:0, logged:0, remaining:0, prepW:0, weight:0, chapters:[]}));
+  ALL_CHAPTERS.forEach(c=>{
+    const data=getChapterData(c.n);
+    const prep=chapterPrepPct(data);
+    const loggedH=chapterLoggedMs(c.n)/3600000;
+    const remaining=Math.max(0, data.targetHours - loggedH);
+    prepW+=prep*c.pages; masteryW+=data.mastery*c.pages; weight+=c.pages;
+    targetTotal+=data.targetHours; loggedTotal+=loggedH;
+    if(prep>=86 && data.mastery>=86) examReady++;
+    const s=sections[c.si];
+    s.target+=data.targetHours; s.logged+=loggedH; s.remaining+=remaining;
+    s.prepW+=prep*c.pages; s.weight+=c.pages;
+    s.chapters.push({...c, data, prep, loggedH, remaining, tasksLeft:data.tasks.filter(t=>!t.done).length});
+  });
+  sections.forEach(s=>{ s.prep = s.weight? Math.round(s.prepW/s.weight):0; });
+  return {
+    overallPrep: weight? Math.round(prepW/weight):0,
+    overallMastery: weight? Math.round(masteryW/weight):0,
+    targetTotal, loggedTotal, remainingTotal: sections.reduce((a,s)=>a+s.remaining,0),
+    examReady, sections
+  };
+}
+function recentPaceH(days=14){
+  const map=dailyTotalsMap();
+  let ms=0;
+  for(let i=0;i<days;i++) ms += map[dayKey(addDays(new Date(),-i))]||0;
+  return (ms/3600000)/days;
+}
+
+/* ================= PROGRESS PAGE ================= */
+function renderProgressPage(){
+  renderTimerChapterSelect();
+  const T=computeTotals();
+  let html="";
+  COURSE.forEach(([section,chs],si)=>{
+    const s=T.sections[si];
+    let rows="";
+    chs.forEach(([n])=>rows+=chapterRowHtml(n));
+    html+=`<div class="section-block">
+      <div class="section-head"><h3>${section}</h3><div class="section-bar"><div style="width:${s.prep}%"></div></div><span class="section-pct">${s.prep}%</span></div>
+      ${rows}
+    </div>`;
+  });
+  $("sectionsContainer").innerHTML=html;
+
+  $("ringPct").textContent = T.overallPrep+"%";
+  $("prepRing").style.setProperty("--pct", T.overallPrep);
+  $("overallMasteryStat").textContent = T.overallMastery+"%";
+  $("hoursLoggedStat").textContent = T.loggedTotal.toFixed(1)+"h";
+  $("hoursTargetSub").textContent = `of ~${T.targetTotal.toFixed(0)}h target`;
+  $("examReadyStat").textContent = T.examReady;
+  $("chapterCountsSub").textContent = `of ${ALL_CHAPTERS.length} chapters`;
+
+  renderWeekChart();
+  updateLiveStats();
+}
+function chapterRowHtml(n){
+  const info=chapterInfo(n);
+  const data=getChapterData(n);
+  const prep=chapterPrepPct(data);
+  const loggedMs=chapterLoggedMs(n);
+  const loggedH=loggedMs/3600000;
+  const dotClass = (prep>=96&&data.mastery>=96)?"mastered":(prep>=86&&data.mastery>=86)?"ready":(prep>0||loggedMs>0)?"some":"";
+  const isOpen = openChapterN===n;
+  return `
+  <div class="chrow ${isOpen?'open':''}" id="chrow-${n}">
+    <div class="chhead" onclick="toggleChapter(${n})">
+      <span class="chdot ${dotClass}"></span>
+      <span class="chnum">${n}</span>
+      <div class="chtitle"><div class="t">${escapeHtml(info.t)}</div><div class="m">${loggedH.toFixed(1)}h of ${data.targetHours}h · ${data.tasks.filter(t=>!t.done).length} task${data.tasks.filter(t=>!t.done).length===1?"":"s"} left</div></div>
+      <div class="chbars">
+        <div class="minibar prep"><div style="width:${prep}%"></div></div>
+        <div class="minibar mastery"><div style="width:${data.mastery}%"></div></div>
+      </div>
+      <div class="chright">${statusLabel(prep,data.mastery)}</div>
+      <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="chbody"><div class="chbody-inner">${isOpen? chapterBodyHtml(n,data) : ""}</div></div>
+  </div>`;
+}
+function statusLabel(prep,mastery){
+  if(prep>=96&&mastery>=96) return "Mastered";
+  if(prep>=86&&mastery>=86) return "Exam ready";
+  if(prep>=71) return "Strong";
+  if(prep>=51) return "Competent";
+  if(prep>=31) return "Developing";
+  if(prep>=11) return "Introduced";
+  return "Not started";
+}
+function chapterBodyHtml(n,data){
+  const items = data.tasks.map(t=>`
+    <div class="checkitem ${t.done?'done':''}">
+      <input type="checkbox" class="cbox" ${t.done?'checked':''} onchange="toggleTask(${n},'${t.id}',this.checked)" aria-label="${escapeHtml(t.label)}">
+      <span class="ci-icon">${t.icon||"•"}</span>
+      <span class="lbl" contenteditable="true" spellcheck="false"
+            onblur="renameTask(${n},'${t.id}',this)"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">${escapeHtml(t.label)}</span>
+      <button class="iconbtn" onclick="deleteTask(${n},'${t.id}')" title="Delete task" aria-label="Delete task">✕</button>
+    </div>`).join("") || `<div class="footnote">No tasks yet — add one below or tap a suggestion.</div>`;
+  const chips = TASK_PRESETS.map((p,i)=>({p,i})).filter(({p})=>!data.tasks.some(t=>t.label===p.label))
+    .map(({p,i})=>`<button class="qchip" onclick="addTaskPreset(${n},${i})">+ ${p.icon} ${escapeHtml(p.label)}</button>`).join("");
+  const loggedH=(chapterLoggedMs(n)/3600000).toFixed(1);
+  return `
+    <div class="checklist">${items}</div>
+    <div class="addrow">
+      <input type="text" id="newTask-${n}" placeholder="Add your own task…" onkeydown="if(event.key==='Enter')addTaskFromInput(${n})">
+      <button class="btn coffee small" onclick="addTaskFromInput(${n})">Add</button>
+    </div>
+    ${chips?`<div class="quickchips">${chips}</div>`:""}
+    <div class="masteryrow">
+      <label>Mastery</label>
+      <input type="range" min="0" max="100" value="${data.mastery}" oninput="updateMasteryLive(${n},this.value)" aria-label="Mastery percentage">
+      <span class="masteryval" id="mval-${n}">${data.mastery}%</span>
+    </div>
+    <div class="chmetarow">
+      <span>Logged: ${loggedH}h</span>
+      <span>Target hours: <input type="number" min="0.5" step="0.5" value="${data.targetHours}" onchange="updateTargetHours(${n},this.value)"></span>
+    </div>
+    <div class="chactions">
+      <button class="btn small" onclick="addChapterToToday(${n})">+ Add remaining to today</button>
+      <button class="btn coffee small" onclick="openDeepModal(${n})">Flashcards, glossary &amp; notes</button>
+    </div>`;
+}
+function replaceChapterRow(n){
+  const el=$("chrow-"+n);
+  if(!el || !el.parentNode) return; // may already be detached by a blur-triggered re-render
+  const tmp=document.createElement("div");
+  tmp.innerHTML=chapterRowHtml(n);
+  try{ el.replaceWith(tmp.firstElementChild); }catch(e){ /* row was swapped mid-blur; state is saved either way */ }
+}
+/* Replacing a row detaches whatever is focused inside it, which fires blur
+   mid-mutation. When the trigger is a field in the row, refresh on the next tick. */
+function deferRowRefresh(n){ setTimeout(()=>replaceChapterRow(n),0); }
+function toggleChapter(n){
+  const prev=openChapterN;
+  openChapterN = prev===n? null : n;
+  if(prev && prev!==n) replaceChapterRow(prev);
+  replaceChapterRow(n);
+  if(openChapterN===n) setTimeout(()=>{ const el=$("chrow-"+n); if(el) el.scrollIntoView({behavior:"smooth",block:"nearest"}); },90);
+}
+function toggleTask(n,id,checked){
+  const d=getChapterData(n);
+  const t=d.tasks.find(x=>x.id===id); if(!t) return;
+  t.done=checked; setChapterData(n,d);
+  replaceChapterRow(n); refreshTopStats();
+}
+function renameTask(n,id,el){
+  const label=(el.textContent||"").trim();
+  const d=getChapterData(n);
+  const t=d.tasks.find(x=>x.id===id); if(!t) return;
+  if(!label){ el.textContent=t.label; return; } // blank isn't a rename — put the old label back
+  if(t.label===label) return;
+  t.label=label; setChapterData(n,d);
+}
+function deleteTask(n,id){
+  const d=getChapterData(n);
+  d.tasks=d.tasks.filter(x=>x.id!==id); setChapterData(n,d);
+  replaceChapterRow(n); refreshTopStats();
+}
+function addTaskPreset(n,presetIdx){
+  const p=TASK_PRESETS[presetIdx]; if(!p) return;
+  const d=getChapterData(n);
+  d.tasks.push({id:newId(), icon:p.icon, label:p.label, done:false}); setChapterData(n,d);
+  replaceChapterRow(n); refreshTopStats();
+}
+function addTaskFromInput(n){
+  const el=$("newTask-"+n); if(!el) return;
+  const label=el.value.trim(); if(!label) return;
+  const d=getChapterData(n);
+  d.tasks.push({id:newId(), icon:"•", label, done:false}); setChapterData(n,d);
+  replaceChapterRow(n); refreshTopStats();
+  const again=$("newTask-"+n); if(again) again.focus();
+}
+function updateMasteryLive(n,v){
+  v=Number(v);
+  const el=$("mval-"+n); if(el) el.textContent=v+"%";
+  const d=getChapterData(n); d.mastery=v; setChapterData(n,d);
+  const bar=document.querySelector(`#chrow-${n} .minibar.mastery > div`); if(bar) bar.style.width=v+"%";
+  refreshTopStats();
+}
+function updateTargetHours(n,v){
+  const d=getChapterData(n); d.targetHours=Math.max(0.5, Number(v)||d.targetHours); setChapterData(n,d);
+  deferRowRefresh(n); refreshTopStats();
+}
+function refreshTopStats(){
+  const T=computeTotals();
+  $("ringPct").textContent=T.overallPrep+"%";
+  $("prepRing").style.setProperty("--pct",T.overallPrep);
+  $("overallMasteryStat").textContent=T.overallMastery+"%";
+  $("hoursLoggedStat").textContent=T.loggedTotal.toFixed(1)+"h";
+  $("hoursTargetSub").textContent=`of ~${T.targetTotal.toFixed(0)}h target`;
+  $("examReadyStat").textContent=T.examReady;
+  COURSE.forEach((_,si)=>{
+    const blocks=document.querySelectorAll(".section-block");
+    if(!blocks[si]) return;
+    const s=T.sections[si];
+    const bar=blocks[si].querySelector(".section-bar > div");
+    const pct=blocks[si].querySelector(".section-pct");
+    if(bar) bar.style.width=s.prep+"%";
+    if(pct) pct.textContent=s.prep+"%";
+  });
+}
+function renderTimerChapterSelect(){
+  const sel=$("timerChapterSelect");
+  const prev=sel.value;
+  let opts=`<option value="">No chapter (general study)</option>`;
+  COURSE.forEach(([section,chs])=>{
+    opts+=`<optgroup label="${section}">`;
+    chs.forEach(([n,t])=>opts+=`<option value="${n}">${n}. ${escapeHtml(t)}</option>`);
+    opts+=`</optgroup>`;
+  });
+  sel.innerHTML=opts;
+  if(prev) sel.value=prev;
+}
+function renderWeekChart(){
+  const map=dailyTotalsMap();
+  const days=[]; const now=new Date();
+  for(let i=6;i>=0;i--) days.push(addDays(now,-i));
+  const todayKey=dayKey(now);
+  let weekMs=0;
+  $("weekChart").innerHTML=days.map(d=>{
+    const key=dayKey(d); const ms=map[key]||0; weekMs+=ms;
+    const pct=Math.max(3,Math.min(100, Math.round((ms/STREAK_MS)*100)));
+    const cls = ms>=STREAK_MS?"hit":(ms>0?"some":"");
+    return `<div class="wbarwrap ${key===todayKey?'istoday':''}"><div class="wbar ${cls}" style="height:${ms>0?pct:3}%"></div><div class="wlabel">${d.toLocaleDateString(undefined,{weekday:"narrow"})}</div></div>`;
+  }).join("");
+  $("weekTotal").textContent = (weekMs/3600000).toFixed(1)+"h logged";
+}
+
+/* ================= PATHWAY ================= */
+function savePlanField(){
+  const p=getPlan();
+  p.examDate=$("examDateInput").value;
+  p.dailyGoalH=Math.max(0.5, Number($("dailyGoalInput").value)||3);
+  p.sessionH=Math.max(0.5, Number($("sessionLenInput").value)||1.5);
+  savePlan(p);
+  renderPathway();
+}
+function setPaceMode(m){ const p=getPlan(); p.paceMode=m; savePlan(p); renderPathway(); }
+function renderPathway(){
+  const p=getPlan();
+  $("examDateInput").value=p.examDate||"";
+  $("dailyGoalInput").value=p.dailyGoalH;
+  $("sessionLenInput").value=p.sessionH;
+  $("paceModeRecent").classList.toggle("active", p.paceMode==="recent");
+  $("paceModeGoal").classList.toggle("active", p.paceMode==="goal");
+
+  const T=computeTotals();
+  const pace=recentPaceH();
+  const remaining=T.remainingTotal;
+  $("pwRemaining").textContent=remaining.toFixed(1)+"h";
+  $("pwRemainingSub").textContent=`of ${T.targetTotal.toFixed(0)}h total · ${T.loggedTotal.toFixed(1)}h done`;
+
+  let daysLeft=null, needed=null;
+  if(p.examDate){
+    daysLeft=daysBetween(new Date(), fromIsoDay(p.examDate));
+    $("pwDaysLeft").textContent = daysLeft>=0? daysLeft : "past";
+    $("pwExamSub").textContent = fromIsoDay(p.examDate).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});
+    if(daysLeft>0){ needed=remaining/daysLeft; $("pwNeeded").textContent=needed.toFixed(1)+"h"; }
+    else { $("pwNeeded").textContent = remaining>0? "—":"done"; }
+  }else{
+    $("pwDaysLeft").textContent="—"; $("pwExamSub").textContent="set an exam date"; $("pwNeeded").textContent="—";
+  }
+
+  const planPace = p.paceMode==="goal"? p.dailyGoalH : pace;
+  if(remaining<=0){
+    $("pwFinish").textContent="Done"; $("pwFinishSub").textContent="all target hours logged";
+  }else if(planPace>0.05){
+    const d=Math.ceil(remaining/planPace);
+    $("pwFinish").textContent=shortDate(addDays(new Date(),d));
+    $("pwFinishSub").textContent=`${d} days at ${planPace.toFixed(1)}h/day`;
+  }else{
+    $("pwFinish").textContent="—"; $("pwFinishSub").textContent="log some study to project";
+  }
+
+  // pace check
+  const needRef = needed!=null? needed : p.dailyGoalH;
+  const scale=Math.max(needRef, pace, p.dailyGoalH, 1)*1.15;
+  $("paceFill").style.width=Math.min(100,(pace/scale)*100)+"%";
+  $("paceMarker").style.left=Math.min(100,(needRef/scale)*100)+"%";
+  $("paceNow").textContent=`Recent pace ${pace.toFixed(1)}h/day`;
+  $("paceNeed").textContent=`${needed!=null?"Needed":"Your goal"} ${needRef.toFixed(1)}h/day`;
+  const pill=$("pacePill");
+  pill.className="pill";
+  if(remaining<=0){ pill.classList.add("good"); pill.textContent="Course complete"; }
+  else if(pace<=0.05){ pill.textContent="No study logged yet"; }
+  else if(pace>=needRef){ pill.classList.add("good"); pill.textContent="On track"; }
+  else if(pace>=needRef*0.7){ pill.classList.add("warn"); pill.textContent="Slightly behind"; }
+  else { pill.classList.add("bad"); pill.textContent="Behind"; }
+  $("paceNote").textContent = needed!=null
+    ? `You have ${remaining.toFixed(1)}h of work left and ${daysLeft} days until the exam. Your 14‑day average is ${pace.toFixed(1)}h/day; you need ${needed.toFixed(1)}h/day. That is about ${Math.ceil(remaining/p.sessionH)} sessions of ${p.sessionH}h.`
+    : `You have ${remaining.toFixed(1)}h of work left — about ${Math.ceil(remaining/p.sessionH)} sessions of ${p.sessionH}h. Set an exam date to see the pace you need.`;
+
+  // roadmap
+  const projPace = planPace>0.05? planPace : p.dailyGoalH;
+  $("roadmapNote").textContent=`Dates assume ${projPace.toFixed(1)}h/day (${p.paceMode==="goal"?"your daily goal":"your recent pace"}) and that you work through the portions in order.`;
+  let cumulative=0;
+  $("roadmapTrack").innerHTML = T.sections.map((s,si)=>{
+    cumulative += s.remaining;
+    const eta = s.remaining<=0 && cumulative<=0 ? null : addDays(new Date(), Math.ceil(cumulative/projPace));
+    const done = s.remaining<=0;
+    const pct = s.target? Math.round(Math.min(100,(s.logged/s.target)*100)):0;
+    const sessions=Math.ceil(s.remaining/p.sessionH);
+    const chapterRows = s.chapters.map(c=>`
+      <div class="hrow">
+        <span class="hname">${c.n}. ${escapeHtml(c.t)}</span>
+        <span class="hnum">${c.remaining.toFixed(1)}h</span>
+        <span class="hnum">${Math.ceil(c.remaining/p.sessionH)||0}×</span>
+        <span class="hnum">${c.tasksLeft} left</span>
+      </div>`).join("");
+    return `<div class="tnode ${done?'done':''} ${openSectionI===si?'open':''}" id="tnode-${si}">
+      <div class="thead" onclick="toggleSectionNode(${si})">
+        <div>
+          <div class="tname">${escapeHtml(s.name)}</div>
+          <div class="tmeta">${s.remaining.toFixed(1)}h left of ${s.target.toFixed(0)}h · ${sessions} session${sessions===1?"":"s"} · prep ${s.prep}%</div>
+        </div>
+        <div class="tdate">${done?"complete":(eta?shortDate(eta):"—")}</div>
+      </div>
+      <div class="tbar"><div style="width:${pct}%"></div></div>
+      <div class="tchapters">
+        <div class="hrow head"><span class="hname">Chapter</span><span class="hnum">Hours</span><span class="hnum">Sess.</span><span class="hnum">Tasks</span></div>
+        ${chapterRows}
+      </div>
+    </div>`;
+  }).join("");
+}
+function toggleSectionNode(si){
+  openSectionI = openSectionI===si? null : si;
+  document.querySelectorAll(".tnode").forEach((el,i)=>el.classList.toggle("open", i===openSectionI));
+}
+function exportData(){
+  const dump={logs:getLogs(), chapters:getChapterStore(), todos:getTodoStore(), plan:getPlan(), exportedAt:new Date().toISOString()};
+  $("backupBox").value=JSON.stringify(dump);
+  $("backupBox").select();
+}
+function importData(){
+  const raw=$("backupBox").value.trim();
+  if(!raw){ alert("Paste a backup into the box first."); return; }
+  let d;
+  try{ d=JSON.parse(raw); }catch(e){ alert("That does not look like a valid backup."); return; }
+  if(!confirm("Restore this backup? It replaces everything currently saved on this device.")) return;
+  if(d.logs) saveLogs(d.logs);
+  if(d.chapters) saveChapterStore(d.chapters);
+  if(d.todos) saveTodoStore(d.todos);
+  if(d.plan) savePlan(d.plan);
+  alert("Backup restored.");
+  renderPathway(); renderProgressPage();
+}
+
+/* ================= TO-DO PAGE ================= */
+function getDayTodos(d){ return getTodoStore()[isoDay(d)] || []; }
+function setDayTodos(d,list){ const s=getTodoStore(); s[isoDay(d)]=list; saveTodoStore(s); }
+function shiftDay(n){ todoDate=addDays(todoDate,n); renderTodoPage(); }
+function renderTodoPage(){
+  // chapter select for the add row
+  const sel=$("todoChapter");
+  const prev=sel.value;
+  let opts=`<option value="">No chapter</option>`;
+  COURSE.forEach(([section,chs])=>{
+    opts+=`<optgroup label="${section}">`;
+    chs.forEach(([n,t])=>opts+=`<option value="${n}">${n}. ${escapeHtml(t)}</option>`);
+    opts+=`</optgroup>`;
+  });
+  sel.innerHTML=opts; if(prev) sel.value=prev;
+
+  $("todoQuickChips").innerHTML = TODO_PRESETS.map((t,i)=>`<button class="qchip" onclick="addTodoPreset(${i})">+ ${escapeHtml(t)}</button>`).join("");
+
+  const isToday = isoDay(todoDate)===isoDay(new Date());
+  $("dayLabel").innerHTML = `${isToday?"Today":todoDate.toLocaleDateString(undefined,{weekday:"long"})}<small>${todoDate.toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"})}</small>`;
+
+  const list=getDayTodos(todoDate);
+  const done=list.filter(t=>t.done).length;
+  const planned=list.reduce((a,t)=>a+(t.min||0),0);
+  const loggedMs=getLogs().filter(l=>dayKey(l.date)===dayKey(todoDate)).reduce((a,b)=>a+b.ms,0);
+  $("dsDone").textContent=`${done} / ${list.length}`;
+  $("dsPlanned").textContent=planned>=60? `${Math.floor(planned/60)}h ${planned%60}m` : `${planned}m`;
+  $("dsLogged").textContent=hm(loggedMs);
+  $("dayProgFill").style.width=(list.length? Math.round((done/list.length)*100):0)+"%";
+
+  $("dayList").innerHTML = list.length? list.map(t=>`
+    <div class="checkitem ${t.done?'done':''}">
+      <input type="checkbox" class="cbox" ${t.done?'checked':''} onchange="toggleTodo('${t.id}',this.checked)" aria-label="${escapeHtml(t.text)}">
+      <span class="lbl" contenteditable="true" spellcheck="false"
+            onblur="renameTodo('${t.id}',this)"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">${escapeHtml(t.text)}</span>
+      ${t.ch?`<span class="chtag">Ch ${t.ch}</span>`:""}
+      ${t.min?`<span class="mins">${t.min}m</span>`:""}
+      <button class="iconbtn" onclick="deleteTodo('${t.id}')" title="Delete" aria-label="Delete task">✕</button>
+    </div>`).join("") : `<div class="footnote">Nothing planned for this day yet. Add a task below, use a suggestion, or pull something from the backlog.</div>`;
+
+  renderBacklog();
+  renderNextTask();
+}
+function addTodo(){
+  const text=$("todoText").value.trim(); if(!text) return;
+  const ch=$("todoChapter").value? Number($("todoChapter").value):null;
+  const min=Number($("todoMins").value)||0;
+  const list=getDayTodos(todoDate);
+  list.push({id:newId(), text, done:false, ch, min});
+  setDayTodos(todoDate,list);
+  $("todoText").value=""; $("todoMins").value="";
+  renderTodoPage();
+  $("todoText").focus();
+}
+function addTodoPreset(presetIdx){
+  const text=TODO_PRESETS[presetIdx]; if(!text) return;
+  const ch=$("todoChapter").value? Number($("todoChapter").value):null;
+  const list=getDayTodos(todoDate);
+  list.push({id:newId(), text, done:false, ch, min:0});
+  setDayTodos(todoDate,list);
+  renderTodoPage();
+}
+function pushToToday(text, ch){
+  const list=getDayTodos(todoDate);
+  if(list.some(t=>t.text===text && t.ch===ch)){ return; }
+  list.push({id:newId(), text, done:false, ch, min:0});
+  setDayTodos(todoDate,list);
+  renderTodoPage();
+}
+function addChapterToToday(n){
+  const d=getChapterData(n);
+  const list=getDayTodos(todoDate);
+  d.tasks.filter(t=>!t.done).forEach(t=>{
+    if(!list.some(x=>x.text===t.label && x.ch===n)) list.push({id:newId(), text:t.label, done:false, ch:n, min:0});
+  });
+  setDayTodos(todoDate,list);
+  showPage("todo");
+}
+function toggleTodo(id,checked){
+  const list=getDayTodos(todoDate);
+  const t=list.find(x=>x.id===id); if(!t) return;
+  t.done=checked; setDayTodos(todoDate,list); renderTodoPage();
+}
+function renameTodo(id,el){
+  const v=(el.textContent||"").trim();
+  const list=getDayTodos(todoDate);
+  const t=list.find(x=>x.id===id); if(!t) return;
+  if(!v){ el.textContent=t.text; return; } // blank isn't a rename — put the old text back
+  if(t.text===v) return;
+  t.text=v; setDayTodos(todoDate,list);
+}
+function deleteTodo(id){
+  setDayTodos(todoDate, getDayTodos(todoDate).filter(x=>x.id!==id));
+  renderTodoPage();
+}
+function clearDone(){
+  setDayTodos(todoDate, getDayTodos(todoDate).filter(x=>!x.done));
+  renderTodoPage();
+}
+function carryOver(){
+  const prevDay=addDays(todoDate,-1);
+  const prevList=getDayTodos(prevDay).filter(t=>!t.done);
+  if(!prevList.length){ alert("Nothing unfinished on "+prevDay.toLocaleDateString()+"."); return; }
+  const list=getDayTodos(todoDate);
+  prevList.forEach(t=>{ if(!list.some(x=>x.text===t.text && x.ch===t.ch)) list.push({...t, id:newId()}); });
+  setDayTodos(todoDate,list);
+  renderTodoPage();
+}
+function backlogItems(){
+  const items=[];
+  ALL_CHAPTERS.forEach(c=>{
+    const data=getChapterData(c.n);
+    data.tasks.filter(t=>!t.done).forEach(t=>items.push({n:c.n, t:c.t, section:c.section, text:t.label, icon:t.icon||"•", kind:kindOf(t.label)}));
+    (data.weak||[]).forEach(w=>items.push({n:c.n, t:c.t, section:c.section, text:"Revisit: "+w, icon:"🎯", kind:"weak"}));
+  });
+  return items;
+}
+function kindOf(label){
+  const l=label.toLowerCase();
+  if(l.includes("note")) return "notes";
+  if(l.includes("case")||l.includes("statute")) return "cases";
+  if(l.includes("quiz")||l.includes("flashcard")) return "quiz";
+  if(l.includes("paper")||l.includes("essay")||l.includes("problem")) return "paper";
+  if(l.includes("revis")) return "revision";
+  return "other";
+}
+const FILTERS=[["all","All"],["notes","Notes"],["cases","Cases"],["quiz","Quizzes"],["paper","Papers"],["revision","Revision"],["weak","Weak areas"],["other","Other"]];
+function setBacklogFilter(k){ backlogFilter=k; renderBacklog(); }
+function renderBacklog(){
+  const all=backlogItems();
+  $("remainingCount").textContent=`${all.length} open`;
+  $("backlogFilters").innerHTML=FILTERS.map(([k,label])=>{
+    const n = k==="all"? all.length : all.filter(i=>i.kind===k).length;
+    if(n===0 && k!=="all") return "";
+    return `<button class="fchip ${backlogFilter===k?'active':''}" onclick="setBacklogFilter('${k}')">${label} <span class="n">${n}</span></button>`;
+  }).join("");
+  const items = backlogFilter==="all"? all : all.filter(i=>i.kind===backlogFilter);
+  visibleBacklog = items;
+  if(!items.length){ $("remainingList").innerHTML=`<div class="footnote">Nothing outstanding here — every task in this filter is checked off.</div>`; return; }
+  const byChapter={};
+  items.forEach((i,idx)=>{ (byChapter[i.n]=byChapter[i.n]||{t:i.t, section:i.section, list:[]}).list.push({...i, idx}); });
+  $("remainingList").innerHTML=Object.keys(byChapter).sort((a,b)=>a-b).map(n=>{
+    const g=byChapter[n];
+    return `<div class="backlog-ch">
+      <div class="bhead"><b>Ch ${n} — ${escapeHtml(g.t)}</b><span>${g.list.length} open</span></div>
+      ${g.list.map(i=>`<div class="bitem ${i.kind==='weak'?'weak':''}">
+        <span>${i.icon}</span>
+        <span class="btext">${escapeHtml(i.text)}</span>
+        <button class="btn tiny" onclick="pushBacklogItem(${i.idx})">+ Day</button>
+      </div>`).join("")}
+    </div>`;
+  }).join("");
+}
+function pushBacklogItem(idx){
+  const it=visibleBacklog[idx]; if(!it) return;
+  pushToToday(it.text, it.n);
+}
+function renderNextTask(){
+  const candidates = ALL_CHAPTERS.map(c=>({...c, data:getChapterData(c.n)}));
+  const inProgress = candidates.filter(c=>{ const p=chapterPrepPct(c.data); return p>0 && p<100; }).sort((a,b)=>a.data.mastery-b.data.mastery);
+  const pick = inProgress[0] || candidates.find(c=>chapterPrepPct(c.data)===0);
+  if(!pick){ nextTaskPick=null; $("nextTaskBox").innerHTML=`<div class="footnote">Every chapter is checked off — revisit weak areas or run a timed past paper.</div>`; return; }
+  const p=chapterPrepPct(pick.data);
+  const next=pick.data.tasks.find(t=>!t.done);
+  const task=next? next.label : "Begin final revision";
+  const plan=getPlan();
+  const remaining=Math.max(0, pick.data.targetHours - chapterLoggedMs(pick.n)/3600000);
+  nextTaskPick={n:pick.n, task};
+  $("nextTaskBox").innerHTML=`
+    <div class="tt">Chapter ${pick.n} — ${escapeHtml(pick.t)}</div>
+    <div class="footnote">Prep ${p}% · Mastery ${pick.data.mastery}% · ${remaining.toFixed(1)}h left (~${Math.ceil(remaining/plan.sessionH)} sessions). Next step: <b style="color:var(--cream)">${escapeHtml(task)}</b></div>
+    <div class="chactions">
+      <button class="btn primary small" onclick="addNextTaskToDay()">+ Add to this day</button>
+      <button class="btn small" onclick="jumpToChapter(${pick.n})">Open chapter</button>
+    </div>`;
+}
+function addNextTaskToDay(){ if(nextTaskPick) pushToToday(nextTaskPick.task, nextTaskPick.n); }
+function jumpToChapter(n){
+  openChapterN=n;
+  showPage("progress");
+  setTimeout(()=>{ const el=$("chrow-"+n); if(el) el.scrollIntoView({behavior:"smooth",block:"center"}); },80);
+}
+
+/* ================= DEEP MODAL ================= */
+function openDeepModal(n){
+  deepModalChapter=n;
+  const info=chapterInfo(n);
+  const data=getChapterData(n);
+  $("deepModalTitle").textContent=`Chapter ${n} — ${info.t}`;
+  deepTab("flash");
+  renderFlashTab(data); renderGlossTab(data); renderWeakTab(data); renderNotesTab(data);
+  $("deepModal").classList.add("show");
+}
+function closeDeepModal(){
+  $("deepModal").classList.remove("show");
+  if(deepModalChapter && $("chrow-"+deepModalChapter)) replaceChapterRow(deepModalChapter);
+}
+function deepTab(tab){
+  document.querySelectorAll("#deepTabs button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+  document.querySelectorAll(".subpage").forEach(p=>p.classList.toggle("active",p.id==="sub-"+tab));
+}
+function renderFlashTab(data){
+  flashIdx=0; flashFlipped=false;
+  $("fcList").innerHTML=data.flashcards.map((c,i)=>`
+    <div class="glossrow"><div class="rowline"><div><b>Q:</b> ${escapeHtml(c.q)}<br><b>A:</b> ${escapeHtml(c.a)}</div>
+    <button class="btn tiny" onclick="deleteFlash(${i})">Delete</button></div></div>`).join("")||`<div class="footnote">No flashcards saved yet.</div>`;
+  renderFlashViewer(data);
+}
+function renderFlashViewer(data){
+  if(!data.flashcards.length){ $("flashViewer").style.display="none"; $("flashEmpty").style.display="block"; return; }
+  $("flashViewer").style.display="block"; $("flashEmpty").style.display="none";
+  const c=data.flashcards[flashIdx];
+  $("flashFace").textContent = flashFlipped? c.a : c.q;
+  $("flashPos").textContent = `${flashIdx+1} / ${data.flashcards.length}`;
+}
+function flipFlash(){ flashFlipped=!flashFlipped; renderFlashViewer(getChapterData(deepModalChapter)); }
+function nextFlash(){ const d=getChapterData(deepModalChapter); flashIdx=(flashIdx+1)%d.flashcards.length; flashFlipped=false; renderFlashViewer(d); }
+function prevFlash(){ const d=getChapterData(deepModalChapter); flashIdx=(flashIdx-1+d.flashcards.length)%d.flashcards.length; flashFlipped=false; renderFlashViewer(d); }
+function addFlashcard(){
+  const q=$("fcQ").value.trim(), a=$("fcA").value.trim(); if(!q||!a) return;
+  const d=getChapterData(deepModalChapter); d.flashcards.push({q,a}); setChapterData(deepModalChapter,d);
+  $("fcQ").value="";$("fcA").value=""; renderFlashTab(d);
+}
+function deleteFlash(i){
+  const d=getChapterData(deepModalChapter); d.flashcards.splice(i,1); setChapterData(deepModalChapter,d); renderFlashTab(d);
+}
+function renderGlossTab(data){
+  $("glList").innerHTML=data.glossary.map((g,i)=>`
+    <div class="glossrow"><div class="rowline"><span><b>${escapeHtml(g.t)}:</b> ${escapeHtml(g.d)}</span>
+    <button class="btn tiny" onclick="deleteGloss(${i})">Delete</button></div></div>`).join("")||`<div class="footnote">No glossary terms saved yet.</div>`;
+}
+function addGlossary(){
+  const t=$("glT").value.trim(), d2=$("glD").value.trim(); if(!t||!d2) return;
+  const d=getChapterData(deepModalChapter); d.glossary.push({t,d:d2}); setChapterData(deepModalChapter,d);
+  $("glT").value="";$("glD").value=""; renderGlossTab(d);
+}
+function deleteGloss(i){
+  const d=getChapterData(deepModalChapter); d.glossary.splice(i,1); setChapterData(deepModalChapter,d); renderGlossTab(d);
+}
+function renderWeakTab(data){
+  $("weakTags").innerHTML=data.weak.map((w,i)=>`<span class="tag">${escapeHtml(w)}<button onclick="deleteWeak(${i})" aria-label="Remove">✕</button></span>`).join("")||`<div class="footnote">No weak areas logged yet.</div>`;
+}
+function addWeak(){
+  const v=$("weakInput").value.trim(); if(!v) return;
+  const d=getChapterData(deepModalChapter); d.weak.push(v); setChapterData(deepModalChapter,d);
+  $("weakInput").value=""; renderWeakTab(d);
+}
+function deleteWeak(i){
+  const d=getChapterData(deepModalChapter); d.weak.splice(i,1); setChapterData(deepModalChapter,d); renderWeakTab(d);
+}
+function renderNotesTab(data){
+  $("chNotes").value=data.notes||"";
+  $("fileList").innerHTML=(data.files||[]).map((f,i)=>`<div class="logrow"><span>📎 ${escapeHtml(f.name)}</span><button class="btn tiny" onclick="deleteFile(${i})">Remove</button></div>`).join("")||`<div class="footnote">No files referenced yet.</div>`;
+}
+function saveNotesField(){
+  const d=getChapterData(deepModalChapter); d.notes=$("chNotes").value; setChapterData(deepModalChapter,d);
+}
+function attachFile(e){
+  const f=e.target.files[0]; if(!f) return;
+  const d=getChapterData(deepModalChapter); d.files.push({name:f.name, addedAt:new Date().toISOString()});
+  setChapterData(deepModalChapter,d); renderNotesTab(d); e.target.value="";
+}
+function deleteFile(i){
+  const d=getChapterData(deepModalChapter); d.files.splice(i,1); setChapterData(deepModalChapter,d); renderNotesTab(d);
+}
+
+/* ================= CALENDAR ================= */
+function calShiftMonth(delta){ calDate.setMonth(calDate.getMonth()+delta); renderCalendar(); }
+function renderCalendar(){
+  const y=calDate.getFullYear(), m=calDate.getMonth();
+  $("calMonthLabel").textContent=calDate.toLocaleDateString(undefined,{month:"long",year:"numeric"});
+  $("calHeadRow").innerHTML=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>`<div class="calhead">${d}</div>`).join("");
+  const firstDay=new Date(y,m,1).getDay();
+  const daysInMonth=new Date(y,m+1,0).getDate();
+  const map=dailyTotalsMap();
+  const todayKey=dayKey(new Date());
+  let html="";
+  for(let i=0;i<firstDay;i++) html+=`<div class="calday empty"></div>`;
+  let monthMs=0, qualifyingDays=0, studyDays=0;
+  for(let day=1; day<=daysInMonth; day++){
+    const dt=new Date(y,m,day);
+    const ms=map[dayKey(dt)]||0;
+    if(ms>0){ monthMs+=ms; studyDays++; }
+    if(ms>=STREAK_MS) qualifyingDays++;
+    const cls = ms>=STREAK_MS?"streak":(ms>0?"partial":"");
+    html+=`<div class="calday ${cls} ${dayKey(dt)===todayKey?'today':''}" onclick="showDayDetail('${dt.toISOString()}')">
+      <span>${day}</span>${ms>0?`<span class="dot" style="background:${ms>=STREAK_MS?'#a688e8':'#cf9860'}"></span>`:""}
+    </div>`;
+  }
+  $("calGrid").innerHTML=html;
+  $("monthSummary").innerHTML=`
+    <div class="footnote">Total logged this month: <b style="color:var(--cream)">${(monthMs/3600000).toFixed(1)}h</b></div>
+    <div class="footnote">Days studied: <b style="color:var(--cream)">${studyDays}</b> · Days hitting the 3h streak goal: <b style="color:var(--cream)">${qualifyingDays}</b></div>`;
+}
+function showDayDetail(iso){
+  const dt=new Date(iso);
+  const key=dayKey(dt);
+  const logs=getLogs().filter(l=>dayKey(l.date)===key);
+  const totalMs=logs.reduce((a,b)=>a+b.ms,0);
+  const todos=getDayTodos(dt);
+  let html=`<div style="font-weight:700;margin-bottom:8px">${dt.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}</div>`;
+  html+=`<div class="footnote" style="margin-bottom:8px">Total: ${(totalMs/3600000).toFixed(2)}h ${totalMs>=STREAK_MS?"— streak goal met ✅":""}${todos.length?` · plan: ${todos.filter(t=>t.done).length}/${todos.length} tasks done`:""}</div>`;
+  if(!logs.length) html+=`<div class="footnote">No study logged this day.</div>`;
+  else logs.forEach(l=>{ html+=`<div class="logrow"><span>${l.chapterTitle?`Ch ${l.chapterN}: ${escapeHtml(l.chapterTitle)}`:"General study"}</span><b>${Math.round(l.ms/60000)}m</b></div>`; });
+  html+=`<div class="chactions" style="margin-top:10px"><button class="btn small" onclick="openDayPlan('${isoDay(dt)}')">Open this day's plan</button></div>`;
+  $("dayDetail").innerHTML=html;
+}
+function openDayPlan(iso){ todoDate=fromIsoDay(iso); showPage("todo"); }
+
+/* close modal on backdrop tap */
+$("deepModal").addEventListener("click",e=>{ if(e.target.id==="deepModal") closeDeepModal(); });
+
+/* ================= INIT ================= */
+resetTimerUI();
+renderProgressPage();
+tick();
+if(!storageOK) showStorageWarning();
+</script>
+</body>
+</html>
