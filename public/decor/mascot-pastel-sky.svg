@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" width="240" height="160" role="img" aria-hidden="true">
+  <title>Original decoration: pastel sky with clouds</title>
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FBCFE8"/><stop offset="0.5" stop-color="#DDD6FE"/><stop offset="1" stop-color="#BFDBFE"/>
+  </linearGradient></defs>
+  <rect width="240" height="160" fill="url(#sky)"/>
+  <circle cx="196" cy="40" r="22" fill="#FEF3C7" opacity=".9"/>
+  <g fill="#fff" opacity=".85">
+    <ellipse cx="60" cy="96" rx="34" ry="18"/><ellipse cx="86" cy="88" rx="24" ry="16"/>
+    <ellipse cx="164" cy="118" rx="30" ry="15"/><ellipse cx="188" cy="112" rx="20" ry="13"/>
+  </g>
+</svg>

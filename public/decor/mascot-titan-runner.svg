@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-hidden="true">
+  <title>Original mascot: a determined runner with wing emblem</title>
+  <path d="M28 150h144" stroke="#10B981" stroke-width="8" stroke-linecap="round" opacity=".45"/>
+  <circle cx="104" cy="52" r="20" fill="#065F46"/>
+  <circle cx="98" cy="50" r="4" fill="#ECFDF5"/><circle cx="112" cy="50" r="4" fill="#ECFDF5"/>
+  <path d="M96 62q10 7 18 0" stroke="#ECFDF5" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M104 72c16 0 26 12 26 28l-4 26h-46l-4-26c0-16 12-28 28-28z" fill="#10B981"/>
+  <path d="M84 96 52 118M124 96l32 16" stroke="#065F46" stroke-width="11" stroke-linecap="round"/>
+  <path d="M92 126 74 168M116 126l14 42" stroke="#065F46" stroke-width="12" stroke-linecap="round"/>
+  <path d="M150 40q22 6 24 24-20 4-30-10zM58 40q-22 6-24 24 20 4 30-10z" fill="#FB7185" opacity=".8"/>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-hidden="true">
+  <title>Original mascot: a glowing study grimoire</title>
+  <rect x="40" y="42" width="120" height="126" rx="14" fill="#4F46E5"/>
+  <rect x="52" y="52" width="96" height="106" rx="10" fill="#EFF6FF"/>
+  <path d="M100 62l9 20 22 3-16 15 4 22-19-11-19 11 4-22-16-15 22-3z" fill="#60A5FA"/>
+  <rect x="66" y="122" width="68" height="7" rx="3.5" fill="#93C5FD"/>
+  <rect x="66" y="136" width="46" height="7" rx="3.5" fill="#93C5FD"/>
+  <circle cx="158" cy="46" r="9" fill="#A78BFA"/>
+  <circle cx="176" cy="66" r="5" fill="#A78BFA" opacity=".7"/>
+  <circle cx="34" cy="34" r="6" fill="#60A5FA" opacity=".7"/>
+</svg>

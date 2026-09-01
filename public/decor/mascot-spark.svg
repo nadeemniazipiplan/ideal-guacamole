@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-hidden="true">
+  <title>Original mascot: an energetic progress spark</title>
+  <circle cx="100" cy="100" r="60" fill="#A78BFA" opacity=".35"/>
+  <path d="M108 34 66 110h30l-8 58 46-80h-32z" fill="#7C3AED"/>
+  <circle cx="42" cy="52" r="7" fill="#F472B6"/>
+  <circle cx="162" cy="66" r="10" fill="#F472B6" opacity=".8"/>
+  <circle cx="150" cy="152" r="6" fill="#7C3AED" opacity=".6"/>
+</svg>
