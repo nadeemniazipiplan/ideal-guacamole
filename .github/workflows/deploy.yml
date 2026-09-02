@@ -1,0 +1,69 @@
+# Builds the dashboard and publishes it to GitHub Pages.
+#
+# One-time setup (no command line needed):
+#   Repository -> Settings -> Pages -> Build and deployment -> Source:
+#   "GitHub Actions". That's it - every push to the branch below redeploys.
+#
+# The site lands at https://<your-username>.github.io/<repository-name>/
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    # The feature branch, plus the repository default branch so the site keeps
+    # deploying if this work is merged there.
+    branches:
+      - claude/personal-life-dashboard-g7l7ia
+      - claude/magical-hypatia-4yremj
+  # Lets you redeploy by hand from the Actions tab.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deployments at once; let a newer push finish first.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  # The browser-driven layout check is not part of CI, so there is no need to
+  # download a browser during install.
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm test
+
+      - name: Build
+        # GitHub Pages serves the site from /<repository-name>/, so the asset
+        # paths have to be built for that prefix.
+        env:
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+        run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

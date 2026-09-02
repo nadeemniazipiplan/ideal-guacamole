@@ -1,0 +1,37 @@
+{
+  "name": "personal-life-dashboard",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Private, local-first personal life dashboard PWA (tasks, nutrition, fitness, study, streaks).",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "icons": "node scripts/generate-icons.mjs",
+    "check:layout": "node scripts/layout-check.mjs",
+    "build:single": "node scripts/build-single.mjs"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "10.4.0",
+    "@testing-library/react": "16.0.1",
+    "@testing-library/user-event": "14.5.2",
+    "@types/node": "22.9.0",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.4",
+    "fake-indexeddb": "6.0.0",
+    "jsdom": "25.0.1",
+    "playwright": "1.49.0",
+    "typescript": "5.6.3",
+    "vite": "5.4.11",
+    "vitest": "2.1.8"
+  }
+}

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-hidden="true">
+  <title>Original mascot: a cheerful leaf-scout with a headband</title>
+  <circle cx="100" cy="104" r="62" fill="#22D3EE" opacity=".35"/>
+  <path d="M46 84c0-30 24-52 54-52s54 22 54 52v10c0 30-24 54-54 54s-54-24-54-54z" fill="#0E7490"/>
+  <path d="M52 78h96c4 0 7 3 7 7v10c0 4-3 7-7 7H52c-4 0-7-3-7-7V85c0-4 3-7 7-7z" fill="#164E63"/>
+  <path d="M78 84h44l-6 10H84z" fill="#ECFEFF" opacity=".9"/>
+  <path d="M100 88c6 0 10 5 10 10s-4 10-10 10-10-5-10-10 4-10 10-10z" fill="#22D3EE"/>
+  <circle cx="80" cy="120" r="7" fill="#ECFEFF"/><circle cx="120" cy="120" r="7" fill="#ECFEFF"/>
+  <circle cx="81" cy="121" r="3.5" fill="#0F172A"/><circle cx="121" cy="121" r="3.5" fill="#0F172A"/>
+  <path d="M88 138q12 10 24 0" stroke="#ECFEFF" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M150 44c14 6 20 20 16 34-14 2-26-8-28-22 6-8 8-10 12-12z" fill="#34D399"/>
+</svg>

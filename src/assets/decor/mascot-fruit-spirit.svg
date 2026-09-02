@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-hidden="true">
+  <title>Original mascot: a friendly fruit spirit</title>
+  <circle cx="100" cy="106" r="58" fill="#FACC15"/>
+  <path d="M100 48c-8-14-2-26 10-32 4 12 2 24-10 32z" fill="#22C55E"/>
+  <ellipse cx="100" cy="106" rx="58" ry="58" fill="none" stroke="#FB923C" stroke-width="6" opacity=".7"/>
+  <circle cx="80" cy="98" r="9" fill="#fff"/><circle cx="120" cy="98" r="9" fill="#fff"/>
+  <circle cx="81" cy="99" r="4.5" fill="#7C2D12"/><circle cx="121" cy="99" r="4.5" fill="#7C2D12"/>
+  <path d="M82 126q18 16 36 0" stroke="#7C2D12" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="66" cy="118" r="7" fill="#FB7185" opacity=".55"/>
+  <circle cx="134" cy="118" r="7" fill="#FB7185" opacity=".55"/>
+  <path d="M36 150q20-12 40 0" stroke="#FB923C" stroke-width="5" fill="none" stroke-linecap="round" opacity=".6"/>
+</svg>

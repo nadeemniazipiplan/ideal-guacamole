@@ -1,0 +1,23 @@
+{
+  "name": "Personal Life Dashboard",
+  "short_name": "Life Dash",
+  "description": "Private, local-first tracker for tasks, nutrition, training, running, steps, study and streaks.",
+  "id": "/",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f6f7fb",
+  "theme_color": "#7c3aed",
+  "categories": ["health", "productivity", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Today", "url": "./#/today" },
+    { "name": "Add food", "url": "./#/nutrition" },
+    { "name": "Study timer", "url": "./#/study" }
+  ]
+}
