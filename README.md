@@ -11,6 +11,10 @@ whenever you ask.
 Built for iPad first (portrait and landscape), and comfortable on phones and
 desktop browsers.
 
+**New here? Follow [GETTING-STARTED.md](GETTING-STARTED.md)** — a step-by-step
+walkthrough from `npm install` to a working Home Screen app. This file is the
+reference manual behind it.
+
 ---
 
 ## Contents
