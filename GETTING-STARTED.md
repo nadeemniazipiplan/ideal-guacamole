@@ -4,7 +4,7 @@ A first-hour walkthrough: get it running, get it on your iPad, set it up, and us
 it daily. The [README](README.md) is the reference manual; this is the checklist.
 
 - [Part 1 — Run it on your computer](#part-1--run-it-on-your-computer) (5 min)
-- [Part 2 — Put it online so the iPad can use it](#part-2--put-it-online-so-the-ipad-can-use-it) (10 min)
+- [Part 2 — Put it online so the iPad can use it](#part-2--put-it-online-so-the-ipad-can-use-it) (6 clicks)
 - [Part 3 — Install it on the iPad](#part-3--install-it-on-the-ipad) (2 min)
 - [Part 4 — Set up your profile and targets](#part-4--set-up-your-profile-and-targets) (10 min)
 - [Part 5 — A normal day](#part-5--a-normal-day)
@@ -62,53 +62,47 @@ npm run build     # type-check + production build
 
 ## Part 2 — Put it online so the iPad can use it
 
-You need HTTPS for the iPad to install it properly and work offline. Two routes.
+The iPad needs an `https://` address to install the app properly and work
+offline. The repository is already set up to publish itself — **this takes six
+clicks and no typing.**
 
-### Route A — quick look over your Wi-Fi (no offline support)
+### The six clicks
 
-```bash
-npm run build
-npm run preview -- --host
-```
+1. Open <https://github.com/nadeemniazipiplan/ideal-guacamole> and sign in.
+2. Click **Settings** (the tab along the top of the repository, on the right).
+3. In the left-hand menu, click **Pages**.
+4. Under **Build and deployment → Source**, change the dropdown from
+   *Deploy from a branch* to **GitHub Actions**.
+5. Go to the **Actions** tab (top of the repository), click
+   **Deploy to GitHub Pages** in the left list, then **Run workflow →
+   Run workflow**.
+6. Wait about two minutes for the green tick.
 
-It prints a `http://192.168.x.x:4173` address. Open that in Safari on the iPad,
-on the same Wi-Fi. Good enough to check the layout; **offline mode will not work**
-because plain HTTP is not a secure context. Your entries still save on the device.
+Your app is now live, permanently, at:
 
-### Route B — deploy it properly (recommended, free)
+**https://nadeemniazipiplan.github.io/ideal-guacamole/**
 
-The build output in `dist/` is plain static files. Pick one host:
+That address does not change. Every future push to this branch rebuilds and
+redeploys it automatically — the tests have to pass first, so a broken build
+never replaces a working site.
 
-**Cloudflare Pages / Netlify / Vercel** — connect this repository and use:
+> The repository is public, so GitHub Pages is free. Being public means anyone
+> can read the *code*; it does **not** expose your records. Everything you enter
+> is stored in your own browser and never leaves your device.
 
-| Setting | Value |
-| --- | --- |
-| Branch | `claude/personal-life-dashboard-g7l7ia` |
-| Build command | `npm run build` |
-| Output directory | `dist` |
-| Environment variables | none |
+### Alternatives
 
-There is genuinely nothing else to configure — the app has no backend and no
-secrets.
-
-**GitHub Pages** — one extra line first, because the site lives under a
-sub-path. In `vite.config.ts`, inside `defineConfig({ ... })`:
-
-```ts
-export default defineConfig({
-  base: '/ideal-guacamole/',        // <- add this line
-  plugins: [react()],
-  // ...
-});
-```
-
-Then `npm run build` and publish `dist/`. Every asset path already respects that
-base, so nothing else changes.
-
-**Optional but worth it:** if your host lets you set response headers, add the
-five headers listed in the README under *Deployment* (CSP, `X-Content-Type-Options`,
-`Referrer-Policy`, `Permissions-Policy`, HSTS). The app works without them; they
-are defence in depth.
+- **Cloudflare Pages / Netlify / Vercel** — connect the repository, set build
+  command `npm run build` and output directory `dist`, branch
+  `claude/personal-life-dashboard-g7l7ia`, no environment variables.
+- **On your own computer, same Wi-Fi** — `npm run build` then
+  `npm run preview -- --host`, and open the printed `192.168.x.x:4173` address
+  on the iPad. Fine for a quick look, but offline mode will not work over plain
+  HTTP.
+- **One self-contained file** — `npm run build:single` writes
+  `dist-single/life-dashboard.html`, the whole app in a single file you can host
+  anywhere that serves one page. It trades away offline support and Home Screen
+  installation, which both need separate files.
 
 ---
 

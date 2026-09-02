@@ -9,7 +9,11 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [claude/personal-life-dashboard-g7l7ia]
+    # The feature branch, plus the repository default branch so the site keeps
+    # deploying if this work is merged there.
+    branches:
+      - claude/personal-life-dashboard-g7l7ia
+      - claude/magical-hypatia-4yremj
   # Lets you redeploy by hand from the Actions tab.
   workflow_dispatch:
 

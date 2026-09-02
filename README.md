@@ -327,7 +327,9 @@ Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=()
 Strict-Transport-Security: max-age=63072000; includeSubDomains
 ```
 
-To host under a sub-path, set `base` in `vite.config.ts`; every asset reference
+GitHub Pages is already wired up in `.github/workflows/deploy.yml` (set
+*Settings → Pages → Source* to **GitHub Actions** once). To host under a different
+sub-path, set `VITE_BASE_PATH`; every asset reference
 already uses `import.meta.env.BASE_URL`.
 
 ## Optional private cloud sync
