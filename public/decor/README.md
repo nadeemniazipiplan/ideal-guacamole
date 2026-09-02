@@ -4,8 +4,10 @@ Two kinds of file live here.
 
 ## 1. Original mascots (shipped and used by default)
 
-`mascot-*.svg` are original, anime-inspired decorative mascots drawn for this
-project. They are safe to ship and are what the app renders out of the box.
+The original, anime-inspired mascots live in `src/assets/decor/` rather than
+here, so the build inlines them as data URIs - no network request, and they
+render correctly offline from the very first load. They are what the app shows
+out of the box.
 
 | File | Page | Inspiration slot |
 | --- | --- | --- |
@@ -27,8 +29,9 @@ your own licensed or personally owned images:
 
 1. Replace a placeholder file with your image (`.webp` or `.avif` preferred,
    compressed, roughly 400x400 or larger).
-2. Keep the same file name, or add a new file and pick it in
-   **Settings > Appearance > Page themes > Decoration**.
+2. Keep the same file name, or add a new file to this folder and reference it by
+   its name (without `.svg`) - anything that is not a bundled mascot is loaded
+   from `public/decor/<name>.svg`.
 3. Decorations are rendered behind content at 8-15% opacity, are marked
    `aria-hidden`, use empty alt text, and can be switched off entirely.
 

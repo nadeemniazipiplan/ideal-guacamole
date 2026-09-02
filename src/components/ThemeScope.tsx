@@ -1,10 +1,16 @@
 import React, { useEffect } from 'react';
 import type { PageKey, Settings } from '../types/models';
+import { BUNDLED_DECOR } from '../assets/decor';
 
+/**
+ * Resolves a decoration name to something an <img> can load. Bundled mascots
+ * come back as inline data URIs; anything else is treated as a file the user
+ * dropped into `public/decor/`.
+ */
 export function decorUrl(name: string): string {
   if (!name) return '';
-  if (name.startsWith('http') || name.startsWith('/')) return name;
-  return `${import.meta.env.BASE_URL}decor/${name}.svg`;
+  if (name.startsWith('http') || name.startsWith('data:') || name.startsWith('/')) return name;
+  return BUNDLED_DECOR[name] ?? `${import.meta.env.BASE_URL}decor/${name}.svg`;
 }
 
 /**

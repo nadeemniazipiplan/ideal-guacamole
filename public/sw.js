@@ -16,13 +16,9 @@ const SHELL = [
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/apple-touch-icon.png',
-  './decor/mascot-leaf-ninja.svg',
-  './decor/mascot-fruit-spirit.svg',
-  './decor/mascot-titan-runner.svg',
-  './decor/mascot-grimoire.svg',
-  './decor/mascot-spark.svg',
-  './decor/mascot-pastel-sky.svg',
 ];
+// The mascots are inlined as data URIs in the app bundle, so there is nothing
+// to precache for them.
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

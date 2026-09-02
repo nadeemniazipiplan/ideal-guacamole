@@ -14,7 +14,7 @@ createRoot(container).render(
 
 // Offline app shell. Registered after load so it never delays first paint, and
 // skipped in development where Vite serves modules directly.
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
+if ('serviceWorker' in navigator && import.meta.env.PROD && !import.meta.env.VITE_SINGLE_FILE) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {
       // An unavailable service worker only costs offline caching; the app and
